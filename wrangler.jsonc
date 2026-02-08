@@ -1,8 +1,0 @@
-{
-  "name": "pycon",
-  "compatibility_date": "2026-02-08",
-  "main": "src/index.tsx",
-  "assets": {
-    "directory": "./dist"
-  }
-}
