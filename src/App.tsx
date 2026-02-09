@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const [lang, setLang] = useState('EN');
 
   useEffect(() => {
+    // Detección automática del idioma del navegador
     const userLang = navigator.language.split('-')[0].toUpperCase();
     setLang(['ES', 'DE'].includes(userLang) ? userLang : 'EN');
   }, []);
@@ -34,6 +35,7 @@ const App: React.FC = () => {
     <div className="min-h-screen relative bg-slate-50 font-sans antialiased overflow-x-hidden">
       <Navbar currentLang={lang} />
       <main>
+        {/* Flujo de conversión optimizado */}
         <Hero lang={lang} />
         <AuthorityDashboard lang={lang} />
         <ComparisonTable lang={lang} />
@@ -49,9 +51,11 @@ const App: React.FC = () => {
       <Footer lang={lang} />
       <LiveConcierge lang={lang} />
       
+      {/* Botón flotante de contacto directo */}
       <a 
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`} 
         target="_blank"
+        rel="noopener noreferrer"
         className="fixed bottom-8 left-8 z-50 bg-[#112643] text-white p-5 rounded-full shadow-2xl hover:scale-110 transition-all border-2 border-[#c19a5b]/50 group flex items-center gap-4"
       >
         <Logo type="icon" size="xs" variant="light" />
