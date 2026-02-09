@@ -1,54 +1,94 @@
 import React from 'react';
+import { translations } from '../constants/translations';
 
-interface HeroProps { lang: string; }
+interface HeroProps {
+  lang: string;
+}
 
 const Hero: React.FC<HeroProps> = ({ lang }) => {
+  const t = translations[lang as keyof typeof translations]?.hero || translations.EN.hero;
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden bg-[#112643]">
-      {/* Fondo Original con Enfoque Mejorado */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#112643]">
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=90" 
-          alt="Paraguay Luxury Business"
-          className="w-full h-full object-cover object-[center_20%] opacity-50" 
+          src="https://images.unsplash.com/photo-1646837599653-e39f2be8a310?q=75&w=1920&auto=format,compress&fm=webp&fit=crop" 
+          alt="Modern Asunción skyline" 
+          loading="lazy"
+          className="w-full h-full object-cover scale-110 animate-[zoom_30s_infinite_alternate] opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#112643] via-[#112643]/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#112643]/70 via-[#112643]/20 to-[#112643]"></div>
       </div>
 
-      <div className="container mx-auto px-8 md:px-12 relative z-10">
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-16 h-[2px] bg-[#c19a5b]"></div>
-            <span className="text-[#c19a5b] uppercase tracking-[0.5em] text-[10px] md:text-xs font-black">
-              Paraguay Concierge Elite
-            </span>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 text-center text-white">
+        <div className="flex flex-col items-center gap-4 mb-12">
+          <div className="inline-flex items-center gap-4 px-8 py-3 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full animate-in fade-in slide-in-from-bottom duration-1000">
+            <div className="flex h-2 w-2 rounded-full bg-[#c19a5b] animate-pulse"></div>
+            <span className="text-[#c19a5b] text-[10px] font-black uppercase tracking-[0.5em]">{t.badge}</span>
           </div>
-
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-8 leading-[1.05]">
-            {lang === 'ES' ? (
-              <>Tu Futuro en <br/><span className="text-[#c19a5b]">Paraguay</span></>
-            ) : (
-              <>Your Future in <br/><span className="text-[#c19a5b]">Paraguay</span></>
-            )}
-          </h1>
-
-          <p className="text-white/80 text-lg md:text-2xl max-w-xl mb-12 font-light leading-relaxed">
-            {lang === 'ES' 
-              ? 'Residencia VIP y optimización fiscal estratégica bajo la Ley 6984/2022.'
-              : 'VIP residency and strategic tax optimization under Law 6984/2022.'}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6">
-            <a href="#pricing" className="px-12 py-5 bg-[#c19a5b] text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:bg-[#a6824a] transition-all text-center shadow-2xl">
-              {lang === 'ES' ? 'Explorar Planes' : 'Explore Plans'}
-            </a>
-            {/* Botón de la imagen */}
-            <a href="#ai-advisor" className="px-10 py-5 bg-white/5 backdrop-blur-md text-white border-2 border-[#c19a5b]/50 text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:bg-[#c19a5b] hover:text-white transition-all text-center">
-              {lang === 'ES' ? 'Hablar con Concierge' : 'Speak to Concierge'}
-            </a>
+          <div className="px-6 py-2 bg-[#c19a5b]/20 border border-[#c19a5b]/30 rounded-lg backdrop-blur-md">
+            <span className="text-white text-[9px] font-black uppercase tracking-[0.3em]">{t.rating}</span>
           </div>
         </div>
+        
+        <h1 className="text-6xl md:text-[8.5rem] font-serif font-bold mb-10 leading-[0.85] tracking-tighter animate-in fade-in zoom-in duration-1000 delay-300">
+          {t.title1}<br/>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e5c78a] via-[#c19a5b] to-[#e5c78a]">{t.title2}</span>
+        </h1>
+        
+        <p className="text-xl md:text-2xl mb-14 text-slate-200/90 max-w-4xl mx-auto font-light leading-relaxed animate-in fade-in duration-1000 delay-500">
+          {t.subtitle}
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-8 justify-center items-center animate-in fade-in slide-in-from-bottom duration-1000 delay-700">
+          <button 
+            onClick={() => scrollTo('calculator')}
+            className="group relative bg-[#c19a5b] hover:bg-[#b0894a] text-white px-14 py-7 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-2xl hover:shadow-[#c19a5b]/40 active:scale-95"
+          >
+            {t.cta1}
+          </button>
+          
+          {/* BOTÓN "SPEAK TO CONCIERGE" - Diseño Fiel a tu imagen */}
+          <button 
+            onClick={() => scrollTo('ai-advisor')}
+            className="group relative bg-[#112643] hover:bg-slate-900 border-2 border-[#c19a5b] text-white px-12 py-6 rounded-full transition-all active:scale-95 flex items-center gap-6"
+          >
+            <div className="relative">
+              <svg className="w-8 h-8 text-[#c19a5b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+              </svg>
+              <div className="absolute -top-1 -right-1 flex h-3 w-3">
+                <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c19a5b] opacity-75"></div>
+                <div className="relative inline-flex rounded-full h-3 w-3 bg-[#c19a5b]"></div>
+              </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-white font-black text-[11px] uppercase tracking-[0.3em] leading-none mb-1">
+                {lang === 'ES' ? 'Hablar con Concierge' : 'Speak to Concierge'}
+              </span>
+              <span className="text-[#c19a5b] text-[8px] font-bold uppercase tracking-[0.2em] opacity-80">
+                Voice Active 24/7
+              </span>
+            </div>
+          </button>
+        </div>
       </div>
+      
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+        <div className="w-px h-16 bg-gradient-to-b from-[#c19a5b] to-transparent"></div>
+        <span className="text-[10px] uppercase tracking-[0.5em] font-black text-white">{t.scroll}</span>
+      </div>
+
+      <style>{`
+        @keyframes zoom {
+          from { transform: scale(1.1); }
+          to { transform: scale(1.2); }
+        }
+      `}</style>
     </section>
   );
 };
