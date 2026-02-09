@@ -9,31 +9,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #0d1a2d;
+  background-color: #112643;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Scrollbar personalizada para el chat */
-.chat-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.chat-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.chat-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(193, 154, 91, 0.2);
-  border-radius: 10px;
-}
-
-.voice-button-pulse {
-  box-shadow: 0 0 0 0 rgba(193, 154, 91, 0.7);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  70% { box-shadow: 0 0 0 15px rgba(193, 154, 91, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(193, 154, 91, 0); }
 }
