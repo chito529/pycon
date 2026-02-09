@@ -12,7 +12,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Regla de seguridad para el logo */
+/* Regla para evitar que el logo se vea gigante si el CSS tarda en cargar */
 img {
   max-width: 100%;
   height: auto;
