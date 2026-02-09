@@ -11,6 +11,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
   const tiers = [
     {
       name: t.essential,
+      id: "essential",
       price: "$1,450",
       description: lang === 'ES' ? "Ideal para Nómadas Digitales que necesitan una base legal." : "Ideal for Digital Nomads and solo travelers who need a legal foothold.",
       features: [
@@ -26,6 +27,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     },
     {
       name: t.premium,
+      id: "premium",
       price: "$2,200",
       description: lang === 'ES' ? "Servicio guante blanco para individuos de alto patrimonio." : "White-glove service for high-net-worth individuals and tax residents.",
       features: [
@@ -42,6 +44,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     },
     {
       name: t.corporate,
+      id: "corporate",
       price: "$3,800",
       description: lang === 'ES' ? "El paquete completo para familias y negocios internacionales." : "The complete package for families and international business owners.",
       features: [
@@ -58,8 +61,16 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     }
   ];
 
-  const handleAction = () => {
-    document.getElementById('ai-advisor')?.scrollIntoView({ behavior: 'smooth' });
+  // Función de acción para conectar con el Chat
+  const handleAction = (planName: string) => {
+    // 1. Scroll suave al chat
+    const chatSection = document.getElementById('ai-advisor');
+    if (chatSection) {
+      chatSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 2. Opcional: Enviar un mensaje automático al chat (si el componente IA lo soporta)
+    console.log(`Plan seleccionado: ${planName}`);
   };
 
   return (
@@ -87,7 +98,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
                 <h4 className={`text-2xl font-bold mb-4 ${tier.highlight ? 'text-[#c19a5b]' : 'text-[#112643]'}`}>{tier.name}</h4>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-serif font-bold tracking-tighter">{tier.price}</span>
-                  <span className={`text-[10px] font-black uppercase tracking-widest ${tier.highlight ? 'text-slate-400' : 'text-slate-400'}`}>/one-time</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">/one-time</span>
                 </div>
                 <p className={`mt-6 text-sm leading-relaxed font-light ${tier.highlight ? 'text-slate-300' : 'text-slate-500'}`}>{tier.description}</p>
               </div>
@@ -105,8 +116,9 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
                 ))}
               </ul>
 
+              {/* Botón de acción actualizado */}
               <button 
-                onClick={handleAction}
+                onClick={() => handleAction(tier.name)}
                 className={`w-full py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:shadow-xl active:scale-95 ${
                   tier.highlight 
                     ? 'bg-[#c19a5b] hover:bg-[#b0894a] text-white shadow-[#c19a5b]/20' 
@@ -119,7 +131,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
           ))}
         </div>
         
-        {/* Footer de Pagos */}
+        {/* Métodos de Pago */}
         <div className="mt-16 text-center space-y-4">
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-60">
             * Official Government fees are included. No hidden surcharges.
