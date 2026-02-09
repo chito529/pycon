@@ -10,15 +10,16 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Inicialización del chat con saludo según idioma
   useEffect(() => {
     const welcomeText = lang === 'ES' 
-      ? '¡Hola! Soy tu consultor de ParaguayConcierge. ¿En qué puedo asesorarte hoy?' 
-      : 'Hello! I am your ParaguayConcierge advisor. How can I assist you today?';
+      ? '¡Hola! Soy tu consultor de ParaguayConcierge. ¿En qué puedo asesorarte sobre tu radicación hoy?' 
+      : 'Hello! I am your ParaguayConcierge advisor. How can I assist you with your residency process today?';
     
-    // Forzamos el rol como 'model' para evitar el error de TypeScript
     setMessages([{ role: 'model' as const, text: welcomeText }]);
   }, [lang]);
 
+  // Auto-scroll al final de la conversación
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
@@ -30,7 +31,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
     const userMsg = input.trim();
     setInput('');
     
-    // Usamos 'as const' para asegurar que el rol sea exactamente "user"
+    // Crear el mensaje del usuario con tipo estricto
     const userMessage: ChatMessage = { role: 'user' as const, text: userMsg };
     const updatedMessages = [...messages, userMessage];
     
@@ -38,7 +39,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
     setIsLoading(true);
 
     try {
-      // Tomamos los últimos 6 mensajes para el historial
+      // Enviamos los últimos 6 mensajes como historial para que la IA tenga memoria
       const chatHistory = messages.slice(-6).map(m => ({
         role: m.role,
         parts: [{ text: m.text }]
@@ -47,17 +48,24 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
       const response = await fetch("https://pycon-ai.juanalmiron529.workers.dev", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg, history: chatHistory }),
+        body: JSON.stringify({ 
+          message: userMsg, 
+          history: chatHistory 
+        }),
       });
 
+      if (!response.ok) throw new Error("Connection failed");
       const data = await response.json();
       
-      // Aseguramos que la respuesta tenga el rol 'model'
       const modelResponse: ChatMessage = { role: 'model' as const, text: data.text };
       setMessages(prev => [...prev, modelResponse]);
       
     } catch (error) {
-      console.error(error);
+      console.error("Chat Error:", error);
+      setMessages(prev => [...prev, { 
+        role: 'model' as const, 
+        text: lang === 'ES' ? "Error de conexión. Por favor, intente más tarde." : "Connection error. Please try again later." 
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -77,6 +85,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
         </div>
 
         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col h-[700px]">
+          {/* Header del Chat */}
           <div className="bg-[#112643] p-6 flex items-center justify-between text-white border-b border-[#c19a5b]/20">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
@@ -92,6 +101,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
             </div>
           </div>
 
+          {/* Área de Mensajes */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-8 space-y-8 bg-slate-50/50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -108,6 +118,18 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
                   }`}>
                     {msg.text}
                   </div>
+
+                  {/* BOTÓN DINÁMICO DE WHATSAPP: Aparece si la IA menciona contacto o WhatsApp */}
+                  {msg.role === 'model' && (msg.text.toLowerCase().includes('whatsapp') || msg.text.toLowerCase().includes('contacto')) && (
+                    <a 
+                      href={`https://wa.me/595981492115?text=${encodeURIComponent("Hola, acabo de hablar con el asesor IA y quiero iniciar mi proceso de radicación.")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 bg-[#c19a5b] text-white text-center py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#a6824a] transition-all shadow-lg border-2 border-[#c19a5b] hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <span>🚀 Iniciar trámite por WhatsApp</span>
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
@@ -120,13 +142,14 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
             )}
           </div>
 
+          {/* Formulario de Entrada */}
           <form onSubmit={handleSubmit} className="p-6 bg-white border-t border-slate-100">
             <div className="relative flex items-center">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={lang === 'ES' ? 'Consulte sobre residencia o impuestos...' : 'Ask about residency or taxes...'}
+                placeholder={lang === 'ES' ? 'Pregunte sobre radicación o impuestos...' : 'Ask about residency or taxes...'}
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-8 py-5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c19a5b]/50 pr-20 transition-all font-medium"
                 disabled={isLoading}
               />
