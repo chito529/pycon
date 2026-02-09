@@ -11,78 +11,52 @@ import Footer from './components/Footer';
 import LiveConcierge from './components/LiveConcierge';
 import TaxCalculator from './components/TaxCalculator';
 import AuthorityDashboard from './components/AuthorityDashboard';
+import ComparisonTable from './components/ComparisonTable';
+import FAQ from './components/FAQ';
 import Logo from './components/Logo';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState('EN');
 
   useEffect(() => {
-    // Detección automática del idioma del navegador
     const userLang = navigator.language.split('-')[0].toUpperCase();
-    if (['ES', 'DE'].includes(userLang)) {
-      setLang(userLang);
-    } else {
-      setLang('EN'); // Default
-    }
+    setLang(['ES', 'DE'].includes(userLang) ? userLang : 'EN');
   }, []);
   
   const WHATSAPP_NUMBER = "595981492115"; 
   const WHATSAPP_MESSAGE = encodeURIComponent(
     lang === 'ES' 
-    ? "Hola, estoy interesado en los servicios premium de ParaguayConcierge. Me gustaría una consultoría." 
-    : lang === 'DE' 
-    ? "Hallo, ich interessiere mich für die Premium-Services von ParaguayConcierge." 
+    ? "Hola, estoy interesado en los servicios premium de ParaguayConcierge." 
     : "Hello, I am interested in the premium services of ParaguayConcierge."
   );
 
   return (
-    <div className="min-h-screen relative bg-slate-50">
+    <div className="min-h-screen relative bg-slate-50 font-sans antialiased overflow-x-hidden">
       <Navbar currentLang={lang} />
       <main>
-        {/* Impacto Visual y Propuesta de Valor */}
         <Hero lang={lang} />
-        
-        {/* Panel de Autoridad Fiscal */}
         <AuthorityDashboard lang={lang} />
-        
-        {/* Herramienta de Retorno de Inversión */}
+        <ComparisonTable lang={lang} />
         <TaxCalculator lang={lang} />
-        
-        {/* Servicios y Hoja de Ruta */}
         <Services lang={lang} />
         <Roadmap lang={lang} />
         <Requirements lang={lang} />
-        
-        {/* Oferta Comercial Directa */}
         <Pricing lang={lang} />
-        
-        {/* Soporte y Cierre con IA */}
+        <FAQ lang={lang} />
         <AIConcierge lang={lang} />
-        
         <SEOSection lang={lang} />
       </main>
-      
       <Footer lang={lang} />
-      
-      {/* Concierge de Voz/Chat flotante */}
       <LiveConcierge lang={lang} />
       
-      {/* Botón de Acción Directa WhatsApp */}
       <a 
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`} 
         target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-8 left-8 z-50 bg-[#112643] text-white p-5 rounded-full shadow-[0_30px_60px_rgba(17,38,67,0.5)] hover:scale-110 transition-all active:scale-95 group flex items-center gap-4 border-2 border-[#c19a5b]/50"
+        className="fixed bottom-8 left-8 z-50 bg-[#112643] text-white p-5 rounded-full shadow-2xl hover:scale-110 transition-all border-2 border-[#c19a5b]/50 group flex items-center gap-4"
       >
-        <div className="relative">
-          <Logo type="icon" size="xs" variant="light" className="transition-transform group-hover:rotate-12" />
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c19a5b] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#c19a5b]"></span>
-          </span>
-        </div>
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-black text-[10px] uppercase tracking-[0.2em] whitespace-nowrap pr-2">
-          {lang === 'ES' ? 'Hablar con un Experto' : lang === 'DE' ? 'Experten kontaktieren' : 'Contact an Expert'}
+        <Logo type="icon" size="xs" variant="light" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-black text-[10px] uppercase tracking-widest whitespace-nowrap">
+          {lang === 'ES' ? 'Contacto Directo' : 'Direct Contact'}
         </span>
       </a>
     </div>
