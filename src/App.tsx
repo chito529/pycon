@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+iimport React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import LiveConcierge from './components/LiveConcierge';
 import TaxCalculator from './components/TaxCalculator';
 import AuthorityDashboard from './components/AuthorityDashboard';
-import ComparisonTable from './components/ComparisonTable';
+import Intelligence from './components/Intelligence';
 import Logo from './components/Logo';
 
 const App: React.FC = () => {
@@ -35,13 +35,12 @@ const App: React.FC = () => {
       <main>
         <Hero lang={lang} />
         <AuthorityDashboard lang={lang} />
-        <ComparisonTable lang={lang} />
+        <Intelligence lang={lang} /> 
         <TaxCalculator lang={lang} />
         <Services lang={lang} />
         <Roadmap lang={lang} />
         <Requirements lang={lang} />
         <Pricing lang={lang} />
-        {/* FAQ eliminado para simplificar el cierre de venta */}
         <AIConcierge lang={lang} />
         <SEOSection lang={lang} />
       </main>
