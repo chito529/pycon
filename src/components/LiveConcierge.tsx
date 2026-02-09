@@ -7,7 +7,6 @@ const LiveConcierge: React.FC<LiveConciergeProps> = ({ lang }) => {
   const [isListening, setIsListening] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  // Inicialización de Reconocimiento de Voz Nativo
   const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
   const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 
@@ -16,9 +15,21 @@ const LiveConcierge: React.FC<LiveConciergeProps> = ({ lang }) => {
     recognition.continuous = false;
   }
 
+  // Función para encontrar una voz femenina de calidad
+  const getFemaleVoice = (lang: string) => {
+    const voices = window.speechSynthesis.getVoices();
+    // Buscamos voces que contengan nombres femeninos comunes en los motores de voz
+    const femaleKeywords = ['female', 'femenino', 'soft', 'google', 'luciana', 'monica', 'helena', 'samantha'];
+    
+    return voices.find(v => 
+      v.lang.startsWith(lang.toLowerCase()) && 
+      femaleKeywords.some(key => v.name.toLowerCase().includes(key))
+    ) || voices.find(v => v.lang.startsWith(lang.toLowerCase()));
+  };
+
   const handleVoiceChat = () => {
     if (!recognition) {
-      alert("Voice recognition not supported in this browser.");
+      alert("Voice recognition not supported.");
       return;
     }
 
@@ -31,7 +42,6 @@ const LiveConcierge: React.FC<LiveConciergeProps> = ({ lang }) => {
       setIsConnecting(true);
 
       try {
-        // Enviamos la voz convertida en texto a tu Worker que ya funciona
         const response = await fetch("https://pycon-ai.juanalmiron529.workers.dev", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -40,9 +50,20 @@ const LiveConcierge: React.FC<LiveConciergeProps> = ({ lang }) => {
 
         const data = await response.json();
 
-        // Convertimos la respuesta de la IA en Voz Humana
+        // --- CONFIGURACIÓN DE VOZ FEMENINA ---
         const utterance = new SpeechSynthesisUtterance(data.text);
-        utterance.lang = lang === 'ES' ? 'es-PY' : 'en-US';
+        const targetLang = lang === 'ES' ? 'es' : 'en';
+        
+        // Asignamos la mejor voz femenina disponible
+        const selectedVoice = getFemaleVoice(targetLang);
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
+
+        utterance.pitch = 1.1; // Un poco más agudo para que suene más femenina
+        utterance.rate = 0.95;  // Un poco más pausado para sonar elegante
+        utterance.volume = 1;
+
         window.speechSynthesis.speak(utterance);
 
       } catch (error) {
@@ -73,10 +94,10 @@ const LiveConcierge: React.FC<LiveConciergeProps> = ({ lang }) => {
         )}
         <div className="flex flex-col items-start pr-4 text-left">
           <span className="text-white font-black text-[10px] uppercase tracking-[0.3em]">
-            {isListening ? "Listening..." : "Speak to Concierge"}
+            {isListening ? (lang === 'ES' ? 'Escuchando...' : 'Listening...') : (lang === 'ES' ? 'Hablar con Asesora' : 'Speak to Concierge')}
           </span>
           <span className="text-[#c19a5b] text-[8px] font-bold uppercase tracking-[0.2em] opacity-80">
-            {isConnecting ? "AI is thinking..." : "Voice Active 24/7"}
+            {isConnecting ? (lang === 'ES' ? 'IA pensando...' : 'Thinking...') : "Elite Voice Active"}
           </span>
         </div>
       </button>
