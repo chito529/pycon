@@ -1,78 +1,62 @@
 import React from 'react';
-import { translations } from '../constants/translations';
 
-interface HeroProps {
-  lang: string;
-}
+interface HeroProps { lang: string; }
 
 const Hero: React.FC<HeroProps> = ({ lang }) => {
-  const t = translations[lang as keyof typeof translations]?.hero || translations.EN.hero;
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#112643]">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#112643]">
+      {/* Imagen de fondo con Overlay dinámico para lectura clara */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1646837599653-e39f2be8a310?q=75&w=1920&auto=format,compress&fm=webp&fit=crop" 
-          alt="Modern Asunción skyline featuring high-rise corporate buildings and luxury real estate, representing Paraguay's investment-grade economy" 
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover scale-110 animate-[zoom_30s_infinite_alternate] opacity-30"
+          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80" 
+          alt="Paraguay Business"
+          className="w-full h-full object-cover object-center opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#112643]/70 via-[#112643]/20 to-[#112643]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#112643]/80 via-transparent to-[#112643]"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 text-center text-white">
-        <div className="flex flex-col items-center gap-4 mb-12">
-          <div className="inline-flex items-center gap-4 px-8 py-3 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full animate-in fade-in slide-in-from-bottom duration-1000">
-            <div className="flex h-2 w-2 rounded-full bg-[#c19a5b] animate-pulse"></div>
-            <span className="text-[#c19a5b] text-[10px] font-black uppercase tracking-[0.5em]">{t.badge}</span>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl">
+          {/* Etiqueta superior responsiva */}
+          <div className="flex items-center gap-3 mb-6 animate-fade-in">
+            <div className="w-12 h-[1px] bg-[#c19a5b]"></div>
+            <span className="text-[#c19a5b] uppercase tracking-[0.4em] text-[10px] md:text-xs font-black">
+              {lang === 'ES' ? 'Servicios de Reubicación Elite' : 'Elite Relocation Services'}
+            </span>
           </div>
-          <div className="px-6 py-2 bg-[#c19a5b]/20 border border-[#c19a5b]/30 rounded-lg backdrop-blur-md">
-            <span className="text-white text-[9px] font-black uppercase tracking-[0.3em]">{t.rating}</span>
-          </div>
-        </div>
-        
-        <h1 className="text-6xl md:text-[8.5rem] font-serif font-bold mb-10 leading-[0.85] tracking-tighter animate-in fade-in zoom-in duration-1000 delay-300">
-          {t.title1}<br/>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e5c78a] via-[#c19a5b] to-[#e5c78a]">{t.title2}</span>
-        </h1>
-        
-        <p className="text-xl md:text-2xl mb-14 text-slate-200/90 max-w-4xl mx-auto font-light leading-relaxed animate-in fade-in duration-1000 delay-500">
-          {t.subtitle}
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-8 justify-center items-center animate-in fade-in slide-in-from-bottom duration-1000 delay-700">
-          <button 
-            onClick={() => scrollTo('calculator')}
-            className="group relative bg-[#c19a5b] hover:bg-[#b0894a] text-white px-14 py-7 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-2xl hover:shadow-[#c19a5b]/40 active:scale-95"
-          >
-            {t.cta1}
-          </button>
-          
-          <button 
-            onClick={() => scrollTo('pricing')}
-            className="group bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/20 text-white px-14 py-7 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all active:scale-95 flex items-center gap-4"
-          >
-            {t.cta2}
-          </button>
-        </div>
-      </div>
-      
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
-        <div className="w-px h-16 bg-gradient-to-b from-[#c19a5b] to-transparent"></div>
-        <span className="text-[10px] uppercase tracking-[0.5em] font-black text-white">{t.scroll}</span>
-      </div>
 
-      <style>{`
-        @keyframes zoom {
-          from { transform: scale(1.1); }
-          to { transform: scale(1.2); }
-        }
-      `}</style>
+          {/* Título fluido: escala de 4xl a 7xl según el dispositivo */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-8 leading-[1.1]">
+            {lang === 'ES' ? (
+              <>Tu Puerta de Entrada a <span className="text-[#c19a5b]">Paraguay</span></>
+            ) : (
+              <>Your Gateway to <span className="text-[#c19a5b]">Paraguay</span></>
+            )}
+          </h1>
+
+          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mb-12 leading-relaxed font-light">
+            {lang === 'ES' 
+              ? 'Residencia permanente y optimización fiscal bajo la Ley 6984/2022. Disfruta de un 0% de impuestos sobre ingresos extranjeros.'
+              : 'Permanent residency and tax optimization under Law 6984/2022. Benefit from 0% tax on foreign-sourced income.'}
+          </p>
+
+          {/* Botones adaptables: ocupan el ancho total en móvil */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a 
+              href="#pricing"
+              className="px-10 py-5 bg-[#c19a5b] text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-[#a6824a] transition-all text-center shadow-2xl active:scale-95"
+            >
+              {lang === 'ES' ? 'Ver Planes de Inversión' : 'View Investment Plans'}
+            </a>
+            <a 
+              href="#ai-advisor"
+              className="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/20 text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-white/10 transition-all text-center active:scale-95"
+            >
+              {lang === 'ES' ? 'Hablar con Asesor IA' : 'Talk to AI Advisor'}
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
