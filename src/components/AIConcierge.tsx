@@ -13,7 +13,6 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   const WHATSAPP_NUMBER = "595981492115";
   const CALENDAR_LINK = "https://calendar.app.google/qnGfL7nwnFSbs3Yv8";
 
-  // Bienvenida inicial
   useEffect(() => {
     const welcome = lang === 'ES' 
       ? '¡Hola! Soy tu consultor senior. ¿En qué puedo asesorarte hoy?' 
@@ -21,7 +20,6 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
     setMessages([{ role: 'model' as const, text: welcome }]);
   }, [lang]);
 
-  // Escuchar evento de Pricing
   useEffect(() => {
     const handlePlanEvent = (e: any) => {
       const planName = e.detail.plan;
@@ -89,60 +87,45 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
         </div>
 
         <div className="bg-white md:rounded-[2.5rem] shadow-2xl border-t md:border border-slate-100 flex flex-col h-[85vh] md:h-[700px] overflow-hidden">
-          <div className="bg-[#112643] p-4 md:p-6 flex items-center gap-4 text-white border-b border-[#c19a5b]/20">
+          <div className="bg-[#112643] p-4 md:p-6 flex items-center gap-4 text-white">
             <Logo type="icon" size="xs" variant="light" />
-            <div className="text-left">
-               <span className="text-[10px] font-black uppercase tracking-widest block">Official Protocol Chat</span>
-               <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">System Online</span>
-               </div>
-            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest">Protocol Secured</span>
           </div>
 
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-slate-50/50 chat-scrollbar text-left">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-slate-50/50">
             {messages.map((msg, idx) => (
-              <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                <div className="flex flex-col max-w-[85%] md:max-w-[75%] gap-3">
-                  <div className={`px-5 py-3 rounded-2xl text-[15px] md:text-sm leading-relaxed shadow-sm ${
+              <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse text-right' : 'flex-row text-left'}`}>
+                <div className="flex flex-col max-w-[85%] md:max-w-[70%] gap-3">
+                  <div className={`px-5 py-3 rounded-2xl text-[14px] md:text-sm leading-relaxed shadow-sm ${
                     msg.role === 'user' ? 'bg-[#112643] text-white rounded-tr-none' : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                   }`}>
                     {msg.text}
                   </div>
 
                   {msg.role === 'model' && shouldShowButtons(msg.text) && (
-                    <div className="mt-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="flex h-2 w-2 relative">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c19a5b] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c19a5b]"></span>
-                        </span>
-                        <span className="text-[#c19a5b] text-[9px] font-black uppercase tracking-[0.2em]">Respuesta Instantánea</span>
-                      </div>
-                      <div className="flex flex-col sm:flex-row gap-2">
-                        <a 
-                          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola, me gustaría coordinar los pasos con un asesor.")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 bg-[#25D366] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all"
-                        >
-                          WhatsApp
-                        </a>
-                        <a 
-                          href={CALENDAR_LINK}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 bg-[#c19a5b] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all"
-                        >
-                          📅 Reservar Reunión
-                        </a>
-                      </div>
+                    <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                      <a 
+                        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola, me gustaría coordinar los pasos con un asesor.")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-[#25D366] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg"
+                      >
+                        WhatsApp
+                      </a>
+                      <a 
+                        href={CALENDAR_LINK}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-[#c19a5b] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg"
+                      >
+                        📅 Reservar Reunión
+                      </a>
                     </div>
                   )}
                 </div>
               </div>
             ))}
-            {isLoading && <div className="text-[#c19a5b] text-[10px] font-black animate-pulse uppercase tracking-widest">IA Pensando...</div>}
+            {isLoading && <div className="text-[#c19a5b] text-[10px] font-black animate-pulse uppercase ml-2">IA Pensando...</div>}
           </div>
 
           <form onSubmit={handleSubmit} className="p-4 md:p-6 bg-white border-t border-slate-100 mb-safe">
@@ -151,11 +134,11 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#c19a5b]/50"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-base focus:outline-none focus:ring-2 focus:ring-[#c19a5b]/50 transition-all"
                 placeholder={lang === 'ES' ? 'Escribe aquí...' : 'Type here...'}
                 disabled={isLoading}
               />
-              <button type="submit" className="bg-[#112643] text-white p-4 rounded-xl shadow-lg active:scale-90 transition-all disabled:opacity-50" disabled={isLoading}>
+              <button type="submit" className="bg-[#112643] text-white p-4 rounded-xl shadow-lg disabled:opacity-50" disabled={isLoading}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             </div>
