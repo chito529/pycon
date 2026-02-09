@@ -7,10 +7,7 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
   background-color: #112643;
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
