@@ -52,14 +52,15 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             {t.cta1}
           </button>
           
-          {/* BOTÓN "SPEAK TO CONCIERGE" - Diseño Fiel a tu imagen */}
+          {/* BOTÓN "CHAT CON CONCIERGE" - Estética de la imagen pero con icono de chat */}
           <button 
             onClick={() => scrollTo('ai-advisor')}
             className="group relative bg-[#112643] hover:bg-slate-900 border-2 border-[#c19a5b] text-white px-12 py-6 rounded-full transition-all active:scale-95 flex items-center gap-6"
           >
             <div className="relative">
+              {/* Icono de Chat Burbuja reemplazando al Micrófono */}
               <svg className="w-8 h-8 text-[#c19a5b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.8-.553L3 21l1.315-3.945A9.274 9.274 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               <div className="absolute -top-1 -right-1 flex h-3 w-3">
                 <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c19a5b] opacity-75"></div>
@@ -68,10 +69,10 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             </div>
             <div className="flex flex-col items-start">
               <span className="text-white font-black text-[11px] uppercase tracking-[0.3em] leading-none mb-1">
-                {lang === 'ES' ? 'Hablar con Concierge' : 'Speak to Concierge'}
+                {lang === 'ES' ? 'Chatear con Concierge' : 'Chat with Concierge'}
               </span>
               <span className="text-[#c19a5b] text-[8px] font-bold uppercase tracking-[0.2em] opacity-80">
-                Voice Active 24/7
+                AI Active 24/7
               </span>
             </div>
           </button>
