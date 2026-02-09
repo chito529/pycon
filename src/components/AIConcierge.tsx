@@ -10,8 +10,9 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Configuración de enlaces
   const WHATSAPP_NUMBER = "595981492115";
-  const CALENDAR_LINK = "https://calendar.google.com/calendar/u/0/appointments/schedules/..."; // Reemplaza con tu link real
+  const CALENDAR_LINK = "https://calendar.app.google/qnGfL7nwnFSbs3Yv8";
 
   useEffect(() => {
     const welcomeText = lang === 'ES' 
@@ -51,7 +52,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
         body: JSON.stringify({ 
           message: text, 
           history: chatHistory,
-          language: lang // Enviamos el idioma al worker para asegurar coherencia
+          language: lang 
         }),
       });
 
@@ -73,16 +74,15 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   return (
     <section className="py-12 md:py-24 bg-slate-50" id="ai-advisor">
       <div className="max-w-5xl mx-auto px-0 md:px-4">
-        <div className="text-center mb-8 px-4">
+        <div className="text-center mb-8 px-4 text-center">
           <div className="flex justify-center mb-4"><Logo type="icon" size="sm" /></div>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#112643] mb-2">
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#112643] mb-2 text-center">
             {lang === 'ES' ? 'Asesor Institucional' : 'Institutional Advisor'}
           </h2>
           <p className="text-slate-500 uppercase tracking-[0.2em] text-[9px] font-black text-center">AI Grounded in Live Legal Data</p>
         </div>
 
         <div className="bg-white md:rounded-[2.5rem] shadow-2xl border-t md:border border-slate-100 overflow-hidden flex flex-col h-[80vh] md:h-[700px]">
-          {/* Header */}
           <div className="bg-[#112643] p-4 md:p-6 flex items-center justify-between text-white">
             <div className="flex items-center gap-3">
               <Logo type="icon" size="xs" variant="light" />
@@ -96,7 +96,6 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
             </div>
           </div>
 
-          {/* Chat Area */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-slate-50/50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse text-right' : 'flex-row text-left'}`}>
@@ -107,27 +106,23 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
                     {msg.text}
                   </div>
 
-                  {/* BOTONES DE ACCIÓN DUALES (Solo para el modelo) */}
-                  {msg.role === 'model' && (msg.text.toLowerCase().includes('whatsapp') || msg.text.toLowerCase().includes('contacto') || msg.text.toLowerCase().includes('reunion') || msg.text.toLowerCase().includes('meeting')) && (
+                  {/* BOTONES DUALES COMPACTOS */}
+                  {msg.role === 'model' && (msg.text.toLowerCase().includes('whatsapp') || msg.text.toLowerCase().includes('contacto') || msg.text.toLowerCase().includes('reunion') || msg.text.toLowerCase().includes('meeting') || msg.text.toLowerCase().includes('agendar')) && (
                     <div className="flex flex-col sm:flex-row gap-2 mt-4">
-                      {/* WhatsApp Button */}
                       <a 
                         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lang === 'ES' ? "Hola, me gustaría agendar una reunión." : "Hello, I would like to schedule a meeting.")}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-[#25D366] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[9px] uppercase tracking-widest hover:brightness-110 transition-all shadow-md"
+                        className="flex-1 bg-[#25D366] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[9px] uppercase tracking-widest hover:brightness-110 transition-all"
                       >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         WhatsApp
                       </a>
-                      {/* Google Calendar Button */}
                       <a 
                         href={CALENDAR_LINK}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-white border border-slate-200 text-slate-700 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[9px] uppercase tracking-widest hover:bg-slate-50 transition-all shadow-md"
+                        className="flex-1 bg-white border border-slate-200 text-slate-700 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[9px] uppercase tracking-widest hover:bg-slate-50 transition-all"
                       >
-                        <svg className="w-4 h-4 text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                         {lang === 'ES' ? 'Agendar Cita' : 'Schedule Call'}
                       </a>
                     </div>
@@ -138,7 +133,6 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
             {isLoading && <div className="text-[#c19a5b] text-[10px] font-black animate-pulse uppercase tracking-widest">IA is typing...</div>}
           </div>
 
-          {/* Input */}
           <form onSubmit={handleSubmit} className="p-4 md:p-6 bg-white border-t border-slate-100">
             <div className="relative flex items-center gap-2">
               <input
