@@ -10,36 +10,30 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Inicialización
   useEffect(() => {
-    const welcome = lang === 'ES' ? '¡Hola! Soy tu consultor de ParaguayConcierge. ¿Cómo puedo ayudarte?' : 'Hello! I am your ParaguayConcierge advisor. How can I assist you?';
+    const welcome = lang === 'ES' ? '¡Hola! Soy tu consultor senior. ¿En qué puedo asesorarte hoy?' : 'Hello! I am your senior consultant. How can I assist you today?';
     setMessages([{ role: 'model' as const, text: welcome }]);
   }, [lang]);
 
-  // Escuchar selección de planes desde Pricing.tsx
   useEffect(() => {
     const handlePlanEvent = (e: any) => {
       const planName = e.detail.plan;
       const prompt = lang === 'ES' 
-        ? `Me interesa el plan ${planName}. ¿Cuáles son los requisitos?` 
-        : `I am interested in the ${planName} plan. What are the requirements?`;
-      
+        ? `Me interesa el plan ${planName}. ¿Cuáles son los próximos pasos?` 
+        : `I am interested in the ${planName} plan. What are the next steps?`;
       handleExternalSubmit(prompt);
     };
-
     window.addEventListener('selectPlan', handlePlanEvent);
     return () => window.removeEventListener('selectPlan', handlePlanEvent);
   }, [lang, messages]);
 
   const handleExternalSubmit = (text: string) => {
-    if (isLoading) return;
-    sendMessage(text);
+    if (!isLoading) sendMessage(text);
   };
 
   const sendMessage = async (text: string) => {
     const userMessage: ChatMessage = { role: 'user' as const, text };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
+    setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
@@ -65,7 +59,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
     sendMessage(input);
     setInput('');
   };
@@ -75,22 +69,28 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   }, [messages]);
 
   return (
-    <section className="py-12 md:py-24 bg-slate-50" id="ai-advisor">
-      <div className="max-w-5xl mx-auto px-0 md:px-4">
+    <section className="py-12 md:py-24 bg-slate-50 px-0 md:px-4" id="ai-advisor">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-8 md:mb-16 px-4">
+          <div className="flex justify-center mb-4 md:mb-6">
+            <Logo type="icon" size="sm" />
+          </div>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#112643]">
+            {lang === 'ES' ? 'Asesor Institucional' : 'Institutional Advisor'}
+          </h2>
+        </div>
+
         <div className="bg-white md:rounded-[2.5rem] shadow-2xl border-t md:border border-slate-100 flex flex-col h-[85vh] md:h-[700px]">
-          
-          <div className="bg-[#112643] p-4 md:p-6 flex items-center justify-between text-white">
-            <div className="flex items-center gap-3">
-              <Logo type="icon" size="xs" variant="light" />
-              <p className="font-black text-[9px] uppercase tracking-widest">Protocol Chat Online</p>
-            </div>
+          <div className="bg-[#112643] p-4 md:p-6 flex items-center gap-4 text-white">
+            <Logo type="icon" size="xs" variant="light" />
+            <span className="text-[10px] font-black uppercase tracking-widest">Protocol Secured</span>
           </div>
 
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-slate-50/50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                <div className={`px-4 py-3 rounded-[1.2rem] text-[15px] md:text-sm shadow-sm ${
-                  msg.role === 'user' ? 'bg-[#112643] text-white' : 'bg-white text-slate-800 border border-slate-100'
+                <div className={`px-4 py-3 rounded-[1.2rem] text-[15px] md:text-sm leading-relaxed shadow-sm ${
+                  msg.role === 'user' ? 'bg-[#112643] text-white rounded-tr-none' : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                 }`}>
                   {msg.text}
                 </div>
@@ -98,7 +98,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
                   <a 
                     href={`https://wa.me/595981492115?text=Hola, quiero iniciar mi proceso.`}
                     target="_blank"
-                    className="mt-2 block bg-[#c19a5b] text-white text-center py-3 rounded-xl font-bold text-[10px] uppercase shadow-lg"
+                    className="mt-2 block bg-[#c19a5b] text-white text-center py-4 rounded-xl font-bold text-[10px] uppercase shadow-lg active:scale-95"
                   >
                     🚀 WhatsApp Directo
                   </a>
@@ -107,17 +107,17 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit} className="p-4 bg-white border-t">
+          <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-100 mb-safe">
             <div className="flex gap-2">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 bg-slate-50 border p-4 rounded-2xl text-base md:text-sm focus:outline-none"
-                placeholder="Consulte aquí..."
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-[#c19a5b]/50 transition-all"
+                placeholder={lang === 'ES' ? 'Consulte aquí...' : 'Ask here...'}
               />
-              <button type="submit" className="bg-[#112643] text-white p-4 rounded-xl">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              <button type="submit" className="bg-[#112643] text-white p-4 rounded-xl active:scale-90 transition-all">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </button>
             </div>
           </form>
