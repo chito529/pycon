@@ -12,8 +12,8 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
 
   useEffect(() => {
     const welcome = lang === 'ES' 
-      ? 'Bienvenido a ParaguayConcierge. Soy su asesor experto en leyes migratorias y tributarias. ¿En qué puedo ayudarle?' 
-      : 'Welcome to ParaguayConcierge. I am your expert advisor on immigration and tax laws. How can I assist you?';
+      ? '¡Hola! Soy tu consultor de ParaguayConcierge. ¿En qué puedo asesorarte hoy?' 
+      : 'Hello! I am your ParaguayConcierge advisor. How can I assist you today?';
     setMessages([{ role: 'model', text: welcome }]);
   }, [lang]);
 
@@ -27,15 +27,13 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
 
     const userMsg = input.trim();
     setInput('');
-    
-    // Guardamos el mensaje del usuario en la pantalla
     const updatedMessages = [...messages, { role: 'user', text: userMsg }];
     setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
-      // Mapeamos el historial al formato que entiende Gemini
-      const chatHistory = messages.map(m => ({
+      // Mapeo de historial para memoria de la IA
+      const chatHistory = messages.slice(-6).map(m => ({
         role: m.role === 'model' ? 'model' : 'user',
         parts: [{ text: m.text }]
       }));
@@ -43,10 +41,7 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
       const response = await fetch("https://pycon-ai.juanalmiron529.workers.dev", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          message: userMsg,
-          history: chatHistory 
-        }),
+        body: JSON.stringify({ message: userMsg, history: chatHistory }),
       });
 
       const data = await response.json();
@@ -61,42 +56,26 @@ const AIConcierge: React.FC<AIConciergeProps> = ({ lang }) => {
   return (
     <section className="py-24 bg-slate-50" id="ai-advisor">
       <div className="max-w-5xl mx-auto px-4">
-        {/* Títulos y Logo (Mantén tu diseño original aquí) */}
-        
+        {/* Tu diseño de UI actual... */}
         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col h-[700px]">
-          {/* Header del Chat */}
-          
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-8 space-y-8 bg-slate-50/50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                {msg.role === 'model' && (
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex-shrink-0 flex items-center justify-center p-2">
-                    <Logo type="icon" size="xs" />
-                  </div>
-                )}
-                <div className={`px-6 py-4 rounded-[1.5rem] text-sm leading-relaxed ${
-                  msg.role === 'user' ? 'bg-[#112643] text-white rounded-tr-none' : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
+                <div className={`px-6 py-4 rounded-[1.5rem] text-sm ${
+                  msg.role === 'user' ? 'bg-[#112643] text-white' : 'bg-white text-slate-800 border border-slate-100'
                 }`}>
                   {msg.text}
                 </div>
               </div>
             ))}
           </div>
-
-          <form onSubmit={handleSubmit} className="p-6 bg-white border-t border-slate-100">
-            <div className="relative flex items-center">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={lang === 'ES' ? 'Pregunte sobre la Ley 6984/2022...' : 'Ask about Law 6984/2022...'}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-8 py-5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c19a5b]/50"
-                disabled={isLoading}
-              />
-              <button type="submit" className="absolute right-2 bg-[#112643] text-white p-4 rounded-xl" disabled={isLoading}>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
+          <form onSubmit={handleSubmit} className="p-6 bg-white border-t">
+            <input 
+              value={input} 
+              onChange={(e) => setInput(e.target.value)}
+              className="w-full bg-slate-50 border p-5 rounded-2xl focus:outline-none"
+              placeholder="Escribe tu consulta..."
+            />
           </form>
         </div>
       </div>
