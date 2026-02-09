@@ -11,9 +11,8 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
   const tiers = [
     {
       name: t.essential,
-      id: "essential",
       price: "$1,450",
-      description: lang === 'ES' ? "Ideal para Nómadas Digitales que necesitan una base legal." : "Ideal for Digital Nomads and solo travelers who need a legal foothold.",
+      description: lang === 'ES' ? "Ideal para Nómadas Digitales." : "Ideal for Digital Nomads.",
       features: [
         "Temporary Residency (2 years)",
         "Paraguayan ID Card (Cédula)",
@@ -27,9 +26,8 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     },
     {
       name: t.premium,
-      id: "premium",
       price: "$2,200",
-      description: lang === 'ES' ? "Servicio guante blanco para individuos de alto patrimonio." : "White-glove service for high-net-worth individuals and tax residents.",
+      description: lang === 'ES' ? "Servicio guante blanco VIP." : "White-glove VIP service.",
       features: [
         "Permanent Residency / SUACE Fast-Track",
         "Paraguayan ID Card (Cédula)",
@@ -44,9 +42,8 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     },
     {
       name: t.corporate,
-      id: "corporate",
       price: "$3,800",
-      description: lang === 'ES' ? "El paquete completo para familias y negocios internacionales." : "The complete package for families and international business owners.",
+      description: lang === 'ES' ? "Paquete completo para empresas." : "Complete package for businesses.",
       features: [
         "Residency for 2 Family Members",
         "EAS Company Formation (Simplified Corp)",
@@ -61,27 +58,25 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
     }
   ];
 
-  // Función de acción para conectar con el Chat
-  const handleAction = (planName: string) => {
+  const handlePlanSelection = (planName: string) => {
     // 1. Scroll suave al chat
-    const chatSection = document.getElementById('ai-advisor');
-    if (chatSection) {
-      chatSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById('ai-advisor')?.scrollIntoView({ behavior: 'smooth' });
 
-    // 2. Opcional: Enviar un mensaje automático al chat (si el componente IA lo soporta)
-    console.log(`Plan seleccionado: ${planName}`);
+    // 2. Emitir evento para la IA
+    const message = lang === 'ES' 
+      ? `Me interesa el ${planName}. ¿Cómo agendamos para iniciar?` 
+      : `I am interested in the ${planName}. How can we schedule to start?`;
+
+    const event = new CustomEvent('ai-plan-selection', { detail: { message } });
+    window.dispatchEvent(event);
   };
 
   return (
     <section className="py-24 px-4 bg-white" id="pricing">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
-          <h2 className="text-xs font-bold text-[#c19a5b] uppercase tracking-[0.4em] mb-4">Investment Plans</h2>
-          <h3 className="text-4xl md:text-5xl font-serif font-bold text-[#112643] mb-6">{t.title}</h3>
-          <p className="text-slate-500 max-w-3xl mx-auto text-lg font-light leading-relaxed">
-            We provide fixed-price solutions with zero hidden costs. Our efficiency ensures you get your residency within the legal processing windows.
-          </p>
+          <h2 className="text-xs font-bold text-[#c19a5b] uppercase tracking-[0.4em] mb-4 text-center">Investment Plans</h2>
+          <h3 className="text-4xl md:text-5xl font-serif font-bold text-[#112643] mb-6 text-center">{t.title}</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -116,9 +111,8 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
                 ))}
               </ul>
 
-              {/* Botón de acción actualizado */}
               <button 
-                onClick={() => handleAction(tier.name)}
+                onClick={() => handlePlanSelection(tier.name)}
                 className={`w-full py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:shadow-xl active:scale-95 ${
                   tier.highlight 
                     ? 'bg-[#c19a5b] hover:bg-[#b0894a] text-white shadow-[#c19a5b]/20' 
@@ -129,24 +123,6 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
               </button>
             </div>
           ))}
-        </div>
-        
-        {/* Métodos de Pago */}
-        <div className="mt-16 text-center space-y-4">
-          <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-60">
-            * Official Government fees are included. No hidden surcharges.
-          </p>
-          <div className="flex justify-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all">
-             <div className="flex items-center gap-2 text-[10px] font-bold text-slate-900">
-               <span className="w-2 h-2 rounded-full bg-emerald-500"></span> BANK WIRE
-             </div>
-             <div className="flex items-center gap-2 text-[10px] font-bold text-slate-900">
-               <span className="w-2 h-2 rounded-full bg-[#c19a5b]"></span> CRYPTO
-             </div>
-             <div className="flex items-center gap-2 text-[10px] font-bold text-slate-900">
-               <span className="w-2 h-2 rounded-full bg-blue-500"></span> SEPA / SWIFT
-             </div>
-          </div>
         </div>
       </div>
     </section>
