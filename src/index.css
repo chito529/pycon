@@ -1,5 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  scroll-behavior: smooth; /* Permite que al tocar "Seleccionar Plan" el salto al chat sea fluido */
+}
+
 body {
   margin: 0;
-  font-family: sans-serif;
-  background-color: #f4f4f4;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8fafc; /* Un gris azulado más elegante que el #f4f4f4 */
+  color: #112643;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Vital para que el sitio no "baile" hacia los lados en celulares */
+}
+
+/* Evita que el teclado del móvil desplace elementos fijos de forma errática */
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mejora la estética de la barra de scroll en el chat */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c19a5b;
 }
