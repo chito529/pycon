@@ -49,11 +49,11 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
           <div className="w-20 h-1 bg-[#c19a5b] mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {packages.map((pkg, idx) => (
             <div 
               key={idx} 
-              className={`relative p-8 rounded-[2rem] border-2 transition-all duration-500 ${
+              className={`relative p-6 md:p-8 rounded-[2rem] border-2 transition-all duration-500 ${
                 pkg.highlight 
                   ? 'border-[#c19a5b] bg-[#112643] text-white shadow-2xl md:scale-105 z-10' 
                   : 'border-slate-100 bg-slate-50 text-[#112643]'
@@ -76,7 +76,7 @@ const Pricing: React.FC<PricingProps> = ({ lang }) => {
                     <svg className={`w-5 h-5 flex-shrink-0 ${pkg.highlight ? 'text-[#c19a5b]' : 'text-[#112643]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    {feature}
+                    <span className="leading-tight">{feature}</span>
                   </li>
                 ))}
               </ul>
