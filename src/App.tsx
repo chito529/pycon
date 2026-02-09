@@ -12,14 +12,12 @@ import LiveConcierge from './components/LiveConcierge';
 import TaxCalculator from './components/TaxCalculator';
 import AuthorityDashboard from './components/AuthorityDashboard';
 import ComparisonTable from './components/ComparisonTable';
-import FAQ from './components/FAQ';
 import Logo from './components/Logo';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState('EN');
 
   useEffect(() => {
-    // Detección automática del idioma del navegador
     const userLang = navigator.language.split('-')[0].toUpperCase();
     setLang(['ES', 'DE'].includes(userLang) ? userLang : 'EN');
   }, []);
@@ -35,7 +33,6 @@ const App: React.FC = () => {
     <div className="min-h-screen relative bg-slate-50 font-sans antialiased overflow-x-hidden">
       <Navbar currentLang={lang} />
       <main>
-        {/* Flujo de conversión optimizado */}
         <Hero lang={lang} />
         <AuthorityDashboard lang={lang} />
         <ComparisonTable lang={lang} />
@@ -44,14 +41,13 @@ const App: React.FC = () => {
         <Roadmap lang={lang} />
         <Requirements lang={lang} />
         <Pricing lang={lang} />
-        <FAQ lang={lang} />
+        {/* FAQ eliminado para simplificar el cierre de venta */}
         <AIConcierge lang={lang} />
         <SEOSection lang={lang} />
       </main>
       <Footer lang={lang} />
       <LiveConcierge lang={lang} />
       
-      {/* Botón flotante de contacto directo */}
       <a 
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`} 
         target="_blank"
