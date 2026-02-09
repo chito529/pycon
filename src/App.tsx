@@ -11,8 +11,6 @@ import Footer from './components/Footer';
 import LiveConcierge from './components/LiveConcierge';
 import TaxCalculator from './components/TaxCalculator';
 import AuthorityDashboard from './components/AuthorityDashboard';
-import Testimonials from './components/Testimonials';
-import LocationShowcase from './components/LocationShowcase';
 import Logo from './components/Logo';
 
 const App: React.FC = () => {
@@ -41,22 +39,35 @@ const App: React.FC = () => {
     <div className="min-h-screen relative bg-slate-50">
       <Navbar currentLang={lang} />
       <main>
+        {/* Impacto Visual y Propuesta de Valor */}
         <Hero lang={lang} />
+        
+        {/* Panel de Autoridad Fiscal */}
         <AuthorityDashboard lang={lang} />
-        <LocationShowcase />
+        
+        {/* Herramienta de Retorno de Inversión */}
         <TaxCalculator lang={lang} />
+        
+        {/* Servicios y Hoja de Ruta */}
         <Services lang={lang} />
         <Roadmap lang={lang} />
         <Requirements lang={lang} />
-        <Testimonials />
+        
+        {/* Oferta Comercial Directa */}
         <Pricing lang={lang} />
+        
+        {/* Soporte y Cierre con IA */}
         <AIConcierge lang={lang} />
+        
         <SEOSection lang={lang} />
       </main>
+      
       <Footer lang={lang} />
       
+      {/* Concierge de Voz/Chat flotante */}
       <LiveConcierge lang={lang} />
       
+      {/* Botón de Acción Directa WhatsApp */}
       <a 
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`} 
         target="_blank"
